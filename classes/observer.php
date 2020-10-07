@@ -52,9 +52,9 @@ class enrol_leeloolxp_enroll_observer {
         $courseid = $eventdata['courseid'];
         $contextinstanceid = $eventdata['contextinstanceid'];
         $component = $eventdata['component'];
-        $postdata = '&moodle_user_id=' . $userid . '&course_id=' . $courseid . '&activity_id=' . $contextinstanceid . "&mod_name=" . $component . "&user_email=" . $USER->email;
-        $url = $infoteamnio . '/admin/sync_moodle_course/update_viewed_log';
-        $outputs = curl_exec($ch);
+        $postdata = '&moodle_user_id=' . $userid . '&course_id=' . $courseid . '&activity_id=' .
+        $contextinstanceid . "&mod_name=" . $component . "&user_email=" . $USER->email;
+        $url = $teamniourl . '/admin/sync_moodle_course/update_viewed_log';
         $curl = new curl;
         $options = array(
             'CURLOPT_RETURNTRANSFER' => true,
@@ -72,10 +72,8 @@ class enrol_leeloolxp_enroll_observer {
         global $DB;
         $moduleid = $event->contextinstanceid;
         $userid = $event->userid;
-        $courseid = $event->courseid;
         $completionstate = $event->other['completionstate'];
         $user = $DB->get_record('user', array('id' => $userid));
-        $email = $user->email;
         $configenroll = get_config('enrol_leeloolxp_enroll');
         $liacnsekey = $configenroll->leeloolxp_licensekey;
         $postdata = '&license_key=' . $liacnsekey;
@@ -115,10 +113,7 @@ class enrol_leeloolxp_enroll_observer {
         $data = $event->get_data();
         global $DB;
         $user = core_user::get_user($data['relateduserid'], '*', MUST_EXIST);
-        $name = ucfirst(str_replace("'", '', $user->firstname))
-        . "" . ucfirst(str_replace("'", '', $user->lastname));
         $email = str_replace("'", '', $user->email);
-
         $configenroll = get_config('enrol_leeloolxp_enroll');
         $liacnsekey = $configenroll->leeloolxp_licensekey;
         $postdata = '&license_key=' . $liacnsekey;
@@ -133,7 +128,6 @@ class enrol_leeloolxp_enroll_observer {
             return true;
         }
         $infoteamnio = json_decode($output);
-
         $countries = get_string_manager()->get_list_of_countries();
         if ($infoteamnio->status != 'false') {
             $teamniourl = $infoteamnio->data->install_url;
@@ -143,13 +137,11 @@ class enrol_leeloolxp_enroll_observer {
             AND u.username = '$user->username'");
             $userinterestsarr = array();
             if (!empty($userinterests)) {
-                foreach ($userinterests as $key => $value) {
-                    $userinterests_arr[] = $value->name;
+                foreach ($userinterests as $value) {
+                    $userinterestsarr[] = $value->name;
                 }
             }
-
             $userinterestsstring = implode(',', $userinterestsarr);
-
             $lastlogin = date('Y-m-d h:i:s', $user->lastlogin);
             $fullname = ucfirst($user->firstname) . " " . ucfirst($user->middlename) . " " . ucfirst($user->lastname);
             $city = $user->city;
@@ -166,12 +158,11 @@ class enrol_leeloolxp_enroll_observer {
             $lastaccess = $user->lastaccess;
             $lastlogin = $lastlogin;
             $lastip = $user->lastip;
-            $interests = $user_interests_string;
+            $interests = $userinterestsstring;
             $description = $user->description;
             $descriptionofpic = $user->imagealt;
             $alternatename = $user->alternatename;
             $webpage = $user->url;
-
             $sql = "SELECT ud.data  FROM {user_info_data} ud JOIN
             {user_info_field} uf ON uf.id = ud.fieldid WHERE ud.userid = :userid
             AND uf.shortname = :fieldname";
@@ -183,9 +174,15 @@ class enrol_leeloolxp_enroll_observer {
             $params = array('userid' => $user->id, 'fieldname' => 'Pathway');
             $pathway = $DB->get_field_sql($sql, $params);
             $imgurl = new moodle_url('/user/pix.php/' . $user->id . '/f1.jpg');
-
-            $postdata = '&email=' . $email . '&name=' . $fullname . '&city=' . $city . '&country=' . $country . '&timezone=' . $timezone . '&skype=' . $skype . '&idnumber=' . $idnumber . '&institution=' . $institution . '&department=' . $department . '&phone=' . $phone . '&moodle_phone=' . $moodlephone . '&address=' . $address . '&firstaccess=' . $firstaccess . '&lastaccess=' . $lastaccess . '&lastlogin=' . $lastlogin . '&lastip=' . $lastip . '&description=' . $description . '&description_of_pic=' . $descriptionofpic . '&alternatename=' . $alternatename . '&web_page=' . $webpage . '&img_url=' . $imgurl . '&interests=' . $interests . '&degree=' . $degree . '&pathway=' . $pathway;
-
+            $postdata = '&email=' . $email . '&name=' . $fullname . '&city=' . $city . '&
+            country=' . $country . '&timezone=' . $timezone . '&skype=' . $skype . '&idnumber=' .
+                $idnumber . '&institution=' . $institution . '&department=' . $department . '&phone='
+                . $phone . '&moodle_phone=' . $moodlephone . '&address=' . $address . '&firstaccess='
+                . $firstaccess . '&lastaccess=' . $lastaccess . '&lastlogin=' . $lastlogin . '&
+            lastip=' . $lastip . '&description=' . $description . '&description_of_pic=' .
+                $descriptionofpic . '&alternatename=' . $alternatename . '&web_page=' . $webpage . '&
+            img_url=' . $imgurl . '&interests=' . $interests . '&degree=' . $degree . '&pathway='
+                . $pathway;
             /* $fp = fopen('/home/tblue/moodledemo.tblue.io/files.txt', 'w');
             fwrite($fp, print_r($Pathway, TRUE));
             fclose($fp);
@@ -229,7 +226,7 @@ class enrol_leeloolxp_enroll_observer {
 
         if ($infoteamnio->status != 'false') {
             $teamniourl = $infoteamnio->data->install_url;
-            $postdata = '&email=' . $user->email . '&courseid=' . $courseid . '&group_name=' . $group_name;
+            $postdata = '&email=' . $user->email . '&courseid=' . $courseid . '&group_name=' . $groupname;
         } else {
             return true;
         }
@@ -240,15 +237,12 @@ class enrol_leeloolxp_enroll_observer {
      */
     public static function role_assign(\core\event\role_assigned $enrolmentdata) {
         global $DB;
-        $enrolmentdatadata = $enrolmentdata->get_data();
         $snapshotid = $enrolmentdata->get_data()['other']['id'];
         $snapshot = $enrolmentdata->get_record_snapshot('role_assignments', $snapshotid);
         $roleid = $snapshot->roleid;
         $usertype = '';
         $teamniorole = '';
-        $teamniousertype = '';
         $user = $DB->get_record('user', array('id' => $enrolmentdata->relateduserid));
-        $course = $DB->get_record('course', array('id' => $enrolmentdata->courseid));
         $userdegree = $DB->get_record_sql("SELECT DISTINCT data  FROM {user_info_data} as fdata
         left join {user_info_field} as fieldss on fdata.fieldid = fieldss.id where fieldss.shortname =
         'degree' and fdata.userid = '$user->id'");
@@ -371,12 +365,9 @@ class enrol_leeloolxp_enroll_observer {
         if ($infoteamnio->status != 'false') {
             $teamniourl = $infoteamnio->data->install_url;
         } else {
-
             $teamniourl = '';
-
             return false;
         }
-
         $lastlogin = date('Y-m-d h:i:s', $user->lastlogin);
         $fullname = ucfirst($user->firstname) . " " . ucfirst($user->middlename) . " "
         . ucfirst($user->lastname);
@@ -400,9 +391,18 @@ class enrol_leeloolxp_enroll_observer {
         $webpage = $user->url;
         $moodleurlpic = new moodle_url('/user/pix.php/' . $user->id . '/f1.jpg');
         $moodlepicdata = file_get_contents($moodleurlpic);
-        $postdata = '&email=' . $user->email . '&username=' . $user->username . '&fullname=' . $fullname . "&courseid=" . $enrolmentdata->courseid . '&designation=' . $userdesignation . "&user_role=" . $teamniorole . "&user_approval=" . $user_approval . "&can_user_create=" . $can_create_user . "&user_type=" . $usertype . "&city=" . $city . "&country=" . $country . "&timezone=" . $timezone . "&skype=" . $skype . "&idnumber=" . $idnumber . "&institution=" . $institution . "&department=" . $department . "&phone=" . $phone . "&moodle_phone=" . $moodlephone . "&adress=" . $adress . "&firstaccess=" . $firstaccess . "&lastaccess=" . $lastaccess . "&lastlogin=" . $lastlogin . "&lastip=" . $lastip . "&user_profile_pic=" . urlencode($moodlepicdata) . "&user_description=" . $description . "&picture_description=" . $descriptionofpic . "&institution=" . $institution . "&alternate_name=" . $alternatename . "&web_page=" . $webpage;
-
-        $url = $teamnio_url . '/admin/sync_moodle_course/enrolment_newuser';
+        $postdata = '&email=' . $user->email . '&username=' . $user->username . '&fullname=' .
+        $fullname . "&courseid=" . $enrolmentdata->courseid . '&designation=' . $userdesignation
+        . "&user_role=" . $teamniorole . "&user_approval=" . $userapproval . "&can_user_create="
+        . $cancreateuser . "&user_type=" . $usertype . "&city=" . $city . "&country=" . $country
+        . "&timezone=" . $timezone . "&skype=" . $skype . "&idnumber=" . $idnumber . "&
+        institution=" . $institution . "&department=" . $department . "&phone=" . $phone . "&
+        moodle_phone=" . $moodlephone . "&adress=" . $adress . "&firstaccess=" . $firstaccess . "&
+        lastaccess=" . $lastaccess . "&lastlogin=" . $lastlogin . "&lastip=" . $lastip . "&
+        user_profile_pic=" . urlencode($moodlepicdata) . "&user_description=" . $description . "&
+        picture_description=" . $descriptionofpic . "&institution=" . $institution . "&
+        alternate_name=" . $alternatename . "&web_page=" . $webpage;
+        $url = $teamniourl . '/admin/sync_moodle_course/enrolment_newuser';
         $curl = new curl;
         $options = array(
             'CURLOPT_RETURNTRANSFER' => true,
