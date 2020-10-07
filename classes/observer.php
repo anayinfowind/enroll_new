@@ -183,11 +183,6 @@ class enrol_leeloolxp_enroll_observer {
                 $descriptionofpic . '&alternatename=' . $alternatename . '&web_page=' . $webpage . '&
             img_url=' . $imgurl . '&interests=' . $interests . '&degree=' . $degree . '&pathway='
                 . $pathway;
-            /* $fp = fopen('/home/tblue/moodledemo.tblue.io/files.txt', 'w');
-            fwrite($fp, print_r($Pathway, TRUE));
-            fclose($fp);
-            $h = fopen('/home/tblue/moodledemo.tblue.io/files.txt', 'r+');
-            fwrite($h, var_export($Pathway, true));*/
             $url = $teamniourl . '/admin/sync_moodle_course/update_username';
             $curl = new curl;
             $options = array(
@@ -310,10 +305,12 @@ class enrol_leeloolxp_enroll_observer {
 
                 $mteacherdegree = $ssopluginconfig->$teacherdegree;
 
-                $teacherdbsetarr[$si] = $mteacherrole . "_" . $mteacherinstitution . "_" . $mteacherdepartment . "_" . $mteacherdegree;
+                $teacherdbsetarr[$si] = $mteacherrole . "_" . $mteacherinstitution . "_" . 
+                $mteacherdepartment . "_" . $mteacherdegree;
             }
 
-            $userteacherinfo = $roleid . "_" . $userinstitution . "_" . $userdepartment . "_" . $userdegreename;
+            $userteacherinfo = $roleid . "_" . $userinstitution . "_" . $userdepartment . "_" . 
+            $userdegreename;
 
             $matchedvalueteacher = array_search($userteacherinfo, $teacherdbsetarr);
 
