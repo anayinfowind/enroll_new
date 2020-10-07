@@ -222,6 +222,16 @@ class enrol_leeloolxp_enroll_observer {
         if ($infoteamnio->status != 'false') {
             $teamniourl = $infoteamnio->data->install_url;
             $postdata = '&email=' . $user->email . '&courseid=' . $courseid . '&group_name=' . $groupname;
+            $url = 'https://leeloolxp.com/api_moodle.php/?action=page_info';
+            $curl = new curl;
+            $options = array(
+                'CURLOPT_RETURNTRANSFER' => true,
+                'CURLOPT_HEADER' => false,
+                'CURLOPT_POST' => count($postdata),
+            );
+            if (!$output = $curl->post($url, $postdata, $options)) {
+                return true;
+            }
         } else {
             return true;
         }
