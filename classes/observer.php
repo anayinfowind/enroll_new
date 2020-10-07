@@ -67,7 +67,7 @@ class enrol_leeloolxp_enroll_observer {
             return true;
         }
     }
-     /**
+    /**
      * Triggered when course completed.
      *
      * @param \core\event\course_module_completion_updated $event
@@ -205,7 +205,7 @@ class enrol_leeloolxp_enroll_observer {
     /**
      * Triggered when group member added.
      *
-     * @param \core\event\group_member_added $event
+     * @param \core\event\group_member_added $events
      */
     public static function group_member_added(\core\event\group_member_added $events) {
         $group = $events->get_record_snapshot('groups', $events->objectid);
@@ -244,8 +244,8 @@ class enrol_leeloolxp_enroll_observer {
             return true;
         }
     }
-
-   /**
+    
+    /**
      * Triggered when new role assigned to user.
      *
      * @param \core\event\role_assigned $enrolmentdata
