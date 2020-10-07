@@ -29,6 +29,9 @@ defined('MOODLE_INTERNAL') || die();
 class enrol_leeloolxp_enroll_observer {
     /**
      * Plugin to sync users on new enroll, groups, trackign of activity view to LeelooLXP account of the Moodle Admin
+     *
+     * @param string $events The data
+     * @return bool Return true
      */
     public static function viewed_activity(\core\event\course_module_viewed $events) {
         global $USER;
@@ -65,8 +68,11 @@ class enrol_leeloolxp_enroll_observer {
             return true;
         }
     }
-    /**
+     /**
      * Plugin to sync users on new enroll, groups, trackign of activity view to LeelooLXP account of the Moodle Admin
+     *
+     * @param string $events The data
+     * @return bool Return true
      */
     public static function completion_updated(\core\event\course_module_completion_updated $event) {
         global $DB;
@@ -108,6 +114,9 @@ class enrol_leeloolxp_enroll_observer {
     }
     /**
      * Plugin to sync users on new enroll, groups, trackign of activity view to LeelooLXP account of the Moodle Admin
+     *
+     * @param string $events The data
+     * @return bool Return true
      */
     public static function edit_user(\core\event\user_updated $event) {
         $data = $event->get_data();
@@ -198,6 +207,9 @@ class enrol_leeloolxp_enroll_observer {
 
     /**
      * Plugin to sync users on new enroll, groups, trackign of activity view to LeelooLXP account of the Moodle Admin
+     *
+     * @param string $events The data
+     * @return bool Return true
      */
     public static function group_member_added(\core\event\group_member_added $events) {
         $group = $events->get_record_snapshot('groups', $events->objectid);
@@ -239,6 +251,9 @@ class enrol_leeloolxp_enroll_observer {
 
     /**
      * Plugin to sync users on new enroll, groups, trackign of activity view to LeelooLXP account of the Moodle Admin
+     *
+     * @param string $enrolmentdata The data
+     * @return bool Return true
      */
     public static function role_assign(\core\event\role_assigned $enrolmentdata) {
         global $DB;
