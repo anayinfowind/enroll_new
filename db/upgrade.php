@@ -24,10 +24,16 @@
  */
 defined('MOODLE_INTERNAL') || die();
 /**
-* Plugin to sync users on new enroll, groups, trackign of activity view to LeelooLXP account of the Moodle Admin
-*/
+ * Upgrade the plugin.
+ *
+ * @param int $oldversion
+ * @return bool always true
+ */
 function xmldb_enrol_leeloolxp_enroll_upgrade($oldversion) {
-    global $CFG, $DB;
+    global $DB;
     $dbman = $DB->get_manager();
+    if ($oldversion < 2015031200) {
+        upgrade_plugin_savepoint(true, 2015031200, 'qtype', 'myqtype');
+    }
     return true;
 }
