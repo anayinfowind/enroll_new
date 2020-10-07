@@ -33,5 +33,5 @@ require_once($CFG->dirroot . '/lib/moodlelib.php');
  * @author     Leeloo LXP <info@leeloolxp.com>
  */
 class enrol_leeloolxp_enroll_plugin extends enrol_plugin {
-    // var log.//
+    // Var log. //
 }
