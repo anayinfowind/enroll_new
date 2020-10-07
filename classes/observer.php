@@ -244,7 +244,6 @@ class enrol_leeloolxp_enroll_observer {
             return true;
         }
     }
-    
     /**
      * Triggered when new role assigned to user.
      *
