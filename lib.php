@@ -37,6 +37,6 @@ require_once($CFG->dirroot . '/lib/moodlelib.php');
 class enrol_leeloolxp_enroll_plugin extends enrol_plugin
 {
     /** @var log.*/
-    private $log = '';
+   
 } // End of class.
 
