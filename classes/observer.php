@@ -305,11 +305,11 @@ class enrol_leeloolxp_enroll_observer {
 
                 $mteacherdegree = $ssopluginconfig->$teacherdegree;
 
-                $teacherdbsetarr[$si] = $mteacherrole . "_" . $mteacherinstitution . "_" . 
+                $teacherdbsetarr[$si] = $mteacherrole . "_" . $mteacherinstitution . "_" .
                 $mteacherdepartment . "_" . $mteacherdegree;
             }
 
-            $userteacherinfo = $roleid . "_" . $userinstitution . "_" . $userdepartment . "_" . 
+            $userteacherinfo = $roleid . "_" . $userinstitution . "_" . $userdepartment . "_" .
             $userdegreename;
 
             $matchedvalueteacher = array_search($userteacherinfo, $teacherdbsetarr);
