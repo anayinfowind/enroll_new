@@ -23,7 +23,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 defined('MOODLE_INTERNAL') || die();
-
+/**
+* Plugin to sync users on new enroll, groups, trackign of activity view to LeelooLXP account of the Moodle Admin
+*/
 function xmldb_enrol_leeloolxp_enroll_upgrade($oldversion) {
     global $CFG, $DB;
     $dbman = $DB->get_manager();
