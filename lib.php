@@ -34,9 +34,5 @@ require_once($CFG->dirroot . '/lib/moodlelib.php');
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  * @author     Leeloo LXP <info@leeloolxp.com>
  */
-class enrol_leeloolxp_enroll_plugin extends enrol_plugin
-{
-    /** @var log.*/
-   
-} // End of class.
-
+class enrol_leeloolxp_enroll_plugin extends enrol_plugin {
+} 
